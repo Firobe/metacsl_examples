@@ -1,4 +1,7 @@
-#include <stdbool.h>
+#ifndef SPEC_H
+#define SPEC_H
+
+#include "api.h"
 
 /*
 	SMART HOUSE EXAMPLE
@@ -24,9 +27,7 @@
 	as the proof of the meta-properties to succeed.
 */
 
-#define MAX_ROOM_NB 100
-#define MAX_LOCK_NB 10
-#define MAX_WINDOW_NB 10
+//=================== COMPLETE HEADER ============
 
 //The ALARM_UNLOCKING state marks the transition from NONE to
 //RINGING, where all locks are unlocked. After that, no lock can be
@@ -37,18 +38,45 @@ enum ac_status {AC_DISABLED, AC_HEAT, AC_COOL};
 
 struct Room {
 	unsigned clearance_needed; //authentication_level needed to unlock
-	bool door_lock_state; //true: closed
-	bool window_state; //true: closed
+	int door_lock_state; //1: closed
+	int window_state; //1: closed
 	enum ac_status ac_state;
 };
 
-extern unsigned user_clearance;
 extern enum alarm alarm_status;
-
 extern unsigned cur_room_nb; //Current number of rooms
-struct Room rooms[MAX_ROOM_NB]; //Static array of rooms
+extern struct Room rooms[MAX_ROOM_NB]; //Static array of rooms
+extern unsigned user_permissions[USER_NB];
 
-struct Room* room_create();
+//================ USER SPACE FUNCTIONS =============
+
+/*@
+	// Partial specification required for the proof
+	assigns room->door_lock_state;
+	behavior ok:
+		assumes user_permissions[uid] >= room->clearance_needed
+				|| alarm_status == ALARM_UNLOCKING;
+		ensures room->door_lock_state == 0;
+*/
+int room_unlock(int uid, struct Room* room);
+int room_lock(struct Room* room);
+
+void alarm_enable();
+
+int window_open(struct Room* room);
+void window_close(struct Room* room);
+
+void ac_disable(struct Room* room);
+int ac_heat(struct Room* room);
+int ac_cool(struct Room* room);
+
+int room_create(unsigned);
+void alarm_disable();
+void user_change_permission(int, unsigned);
+void reset_all_permissions();
+void force_unlock(struct Room* room);
+
+//==================== SPECIFICATION ===================
 
 /*@
 	//A room structure is valid iff it is stored in the global array
@@ -57,95 +85,83 @@ struct Room* room_create();
 		\exists unsigned i; 0 <= i < cur_room_nb && r == rooms + i;
 */
 
-/*@ requires valid_room(room); */
-bool room_lock(struct Room* room);
 
-/*@
-	requires valid_room(room);
-	// Partial specification required for the proof
-	assigns room->door_lock_state;
-	behavior ok:
-		assumes user_clearance >= room->clearance_needed
-				|| alarm_status == ALARM_UNLOCKING;
-		ensures room->door_lock_state == false;
-*/
-bool room_unlock(struct Room* room);
-
-void alarm_enable();
-void alarm_disable();
-
-/*@ requires valid_room(room); */
-bool window_open(struct Room* room);
-/*@ requires valid_room(room); */
-void window_close(struct Room* room);
-
-/*@ requires valid_room(room); */
-void ac_disable(struct Room* room);
-/*@ requires valid_room(room); */
-bool ac_heat(struct Room* room);
-/*@ requires valid_room(room); */
-bool ac_cool(struct Room* room);
-
-void user_change_clearance(unsigned);
-
-//====================== METAPROPERTIES =======================
-
-/*@
-	meta P1:
-		//Suppose an instruction in any function except room_unlock
-		//that writes into the memory
-		\forall function f;
-		!\subset(f, \f(room_unlock)) ==> \writing(f),
+/*@ meta \macro,
+		\name(forall_room),
+		\arg_nb(2),
 		\forall unsigned ri; 0 <= ri < cur_room_nb ==>
-		//If there is a room
-		\let r = rooms + ri;
-		//For which the lock is closed before an instruction
-		\at(r->door_lock_state, Before) != false //Iif 
-		//And open after
-		&& \at(r->door_lock_state, After) == false
-		//Then it mustn't be because we are changing it directly
-		==> \separated(\written, &r->door_lock_state);
+		\let \param_1 = rooms + ri; \param_2;
+	meta \macro,
+		\name(\constant),
+		\arg_nb(1),
+		\separated(\written, \param_1);
 */
 
-/*@
-	meta P2: 
-		//Suppose an instruction in any function writes into the memory
-		\forall function f; \writing(f),
-		\forall unsigned ri; 0 <= ri < cur_room_nb ==>
-		//If there is a room
-		\let r = rooms + ri;
-		//For which the lock is closed before an instruction
-		\at(r->door_lock_state, Before) != false
-		//And open after
-		&& \at(r->door_lock_state, After) == false
-		//And the user has insufficient clearance
-		&& user_clearance < r->clearance_needed
-		//And the alarm is not being enabled
+#define USER_SET (\callees(receive_command))
+
+/*@ meta \prop,
+		\name(valid_room),
+		\targets(USER_SET),
+		\context(\precond),
+		\tguard(valid_room(\formal(room)));
+*/
+
+/*@ meta \prop,
+		\name(only_room_unlock_unlocks),
+		\targets(\diff(USER_SET, room_unlock)),
+		\context(\writing),
+	forall_room(r,
+		\at(r->door_lock_state, Before) != 0 //Iif 
+		&& \at(r->door_lock_state, After) == 0
+		==> \constant(&r->door_lock_state)
+	);
+*/
+
+/*@ meta \prop,
+		\name(unlocking_needs_permission_or_alarm),
+		\targets(USER_SET),
+		\context(\writing),
+	forall_room(r,
+		\at(r->door_lock_state, Before) != 0
+		&& \at(r->door_lock_state, After) == 0
+		&& \fguard(user_permissions[\formal(uid)] < r->clearance_needed)
 		&& alarm_status != ALARM_UNLOCKING
-		//Then it mustn't be because we are changing it directly
-		==> \separated(\written, &r->door_lock_state);
+		==> \constant(&r->door_lock_state)
+	);
 */
 
-/*@
-	meta P3:
-		//At every point of every function
-		\forall function f; \strong_invariant(f),
-		//If the alarm is ringing
-		alarm_status == ALARM_RINGING ==>
-		//Then every door must be unlocked
-		\forall unsigned ri; 0 <= ri < cur_room_nb ==>
-		rooms[ri].door_lock_state == false;
+/*@ meta \prop,
+		\name(alarm_not_disabled_by_user),
+		\targets(USER_SET),
+		\context(\writing),
+	\at(alarm_status, Before) != AC_DISABLED
+	&& \at(alarm_status, After) == AC_DISABLED
+	==> \constant(&alarm_status);
 */
 
-/*@
-	meta P4:
-		//At every point of every function
-		\forall function f; \strong_invariant(f),
-		//For any room r
-		\forall unsigned ri; 0 <= ri < cur_room_nb ==>
-		\let r = rooms + ri;
-		//If its window is open
-		r->window_state == false
-		//Then the AC must be disabled
-		==> r->ac_state == AC_DISABLED;
+/*@ meta \prop,
+		\name(permissions_constant),
+		\targets(USER_SET),
+		\context(\writing),
+		\constant(user_permissions + (0 .. USER_NB));
 */
+
+/*@ meta \prop,
+		\name(no_door_closed_when_alarm),
+		\targets(\ALL),
+		\context(\strong_invariant),
+	alarm_status == ALARM_RINGING ==>
+	forall_room(r, r->door_lock_state == 0);
+*/
+
+/*@ meta \prop,
+		\name(no_ac_if_window_open),
+		\targets(\ALL),
+		\context(\strong_invariant),
+	forall_room(r,
+		r->window_state == 0
+		==> r->ac_state == AC_DISABLED
+	);
+*/
+
+#endif

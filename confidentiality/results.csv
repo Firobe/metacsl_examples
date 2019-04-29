@@ -1,0 +1,128 @@
+MUTANT NAME,MUTATION,MANUAL VERDICT,EACSL VERDICT,WP VERDICT
+confidentiality.c,NONE,P,P,P
+confidentiality_0.c,confidentiality.c:159: `==` --> `!=`,P,P,P
+confidentiality_1.c,confidentiality.c:159: `p->status == (unsigned int)PAGE_ALLOCATED` --> `! (p->status == (unsigned int)PAGE_ALLOCATED)` ,P,P,P
+confidentiality_2.c,confidentiality.c:158: `==` --> `!=`,P,P,P
+confidentiality_3.c,confidentiality.c:158: `p->encrypted_level == user_level` --> `! (p->encrypted_level == user_level)`,P,P,P
+confidentiality_4.c,confidentiality.c:157: `==` --> `!=`,P,P,P
+confidentiality_5.c,confidentiality.c:157: `p->confidentiality_level == (unsigned int)0` --> `! (p->confidentiality_level == (unsigned int)0)` ,P,P,P
+confidentiality_6.c,confidentiality.c:157: `!=` --> `==`,N,P,N
+confidentiality_7.c,confidentiality.c:157: `p != (struct Page *)0` --> `! (p != (struct Page *)0)`,N,P,N
+confidentiality_8.c,confidentiality.c:142: `==` --> `!=`,P,P,P
+confidentiality_9.c,confidentiality.c:142: `p->status == (unsigned int)PAGE_ALLOCATED` --> `! (p->status == (unsigned int)PAGE_ALLOCATED)` ,P,P,P
+confidentiality_10.c,confidentiality.c:141: `==` --> `!=`,P,P,P
+confidentiality_11.c,confidentiality.c:141: `p->confidentiality_level == user_level` --> `! (p->confidentiality_level == user_level)` ,P,P,P
+confidentiality_12.c,confidentiality.c:140: `>` --> `!=`,P,P,P
+confidentiality_13.c,confidentiality.c:140: `>` --> `==`,P,P,P
+confidentiality_14.c,confidentiality.c:140: `>` --> `<=`,P,P,P
+confidentiality_15.c,confidentiality.c:140: `>` --> `<`,P,P,P
+confidentiality_16.c,confidentiality.c:140: `>` --> `>=`,P,P,P
+confidentiality_17.c,confidentiality.c:140: `p->confidentiality_level > (unsigned int)0` --> `! (p->confidentiality_level > (unsigned int)0)` ,P,P,P
+confidentiality_18.c,confidentiality.c:140: `!=` --> `==`,N,P,N
+confidentiality_19.c,confidentiality.c:140: `p != (struct Page *)0` --> `! (p != (struct Page *)0)`,N,P,N
+confidentiality_20.c,confidentiality.c:130: `-` --> `*`,P,P,P
+confidentiality_21.c,confidentiality.c:130: `-` --> `+`,P,P,P
+confidentiality_22.c,confidentiality.c:129: `>` --> `!=`,P,P,P
+confidentiality_23.c,confidentiality.c:129: `>` --> `==`,P,P,P
+confidentiality_24.c,confidentiality.c:129: `>` --> `<=`,P,P,P
+confidentiality_25.c,confidentiality.c:129: `>` --> `<`,P,P,P
+confidentiality_26.c,confidentiality.c:129: `>` --> `>=`,P,P,P
+confidentiality_27.c,confidentiality.c:129: `user_level > (unsigned int)0` --> `! (user_level > (unsigned int)0)`,P,P,P
+confidentiality_28.c,confidentiality.c:122: `+` --> `*`,P,P,P
+confidentiality_29.c,confidentiality.c:122: `+` --> `-`,P,P,P
+confidentiality_30.c,confidentiality.c:112: `>=` --> `>`,P,P,P
+confidentiality_31.c,confidentiality.c:112: `>=` --> `!=`,N,N,N
+confidentiality_32.c,confidentiality.c:112: `>=` --> `==`,P,P,P
+confidentiality_33.c,confidentiality.c:112: `>=` --> `<=`,N,N,N
+confidentiality_34.c,confidentiality.c:112: `>=` --> `<`,N,N,N
+confidentiality_35.c,confidentiality.c:112: `to->confidentiality_level >= user_level` --> `! (to->confidentiality_level >= user_level)` ,N,N,N
+confidentiality_36.c,confidentiality.c:111: `==` --> `!=`,N,N,N
+confidentiality_37.c,confidentiality.c:111: `to->status == (unsigned int)PAGE_ALLOCATED` --> `! (to->status == (unsigned int)PAGE_ALLOCATED)` ,N,N,N
+confidentiality_38.c,confidentiality.c:111: `!=` --> `==`,N,P,N
+confidentiality_39.c,confidentiality.c:111: `to != (struct Page *)0` --> `! (to != (struct Page *)0)`,N,P,N
+confidentiality_40.c,confidentiality.c:100: `<=` --> `<`,P,P,P
+confidentiality_41.c,confidentiality.c:100: `<=` --> `!=`,N,N,N
+confidentiality_42.c,confidentiality.c:100: `<=` --> `==`,P,P,P
+confidentiality_43.c,confidentiality.c:100: `<=` --> `>=`,N,N,N
+confidentiality_44.c,confidentiality.c:100: `<=` --> `>`,N,N,N
+confidentiality_45.c,confidentiality.c:100: `from->confidentiality_level <= user_level` --> `! (from->confidentiality_level <= user_level)` ,N,N,N
+confidentiality_46.c,confidentiality.c:99: `==` --> `!=`,N,N,N
+confidentiality_47.c,confidentiality.c:99: `from->status == (unsigned int)PAGE_ALLOCATED` --> `! (from->status == (unsigned int)PAGE_ALLOCATED)` ,N,N,N
+confidentiality_48.c,confidentiality.c:99: `!=` --> `==`,N,P,N
+confidentiality_49.c,confidentiality.c:99: `from != (struct Page *)0` --> `! (from != (struct Page *)0)`,N,P,N
+confidentiality_50.c,confidentiality.c:89: `*` --> `-`,N,P,N
+confidentiality_51.c,confidentiality.c:89: `*` --> `+`,N,P,N
+confidentiality_52.c,confidentiality.c:88: `==` --> `!=`,N,P,N
+confidentiality_53.c,confidentiality.c:88: `p->status == (unsigned int)PAGE_ALLOCATED` --> `! (p->status == (unsigned int)PAGE_ALLOCATED)` ,N,P,N
+confidentiality_54.c,confidentiality.c:88: `!=` --> `==`,N,P,N
+confidentiality_55.c,confidentiality.c:88: `p != (struct Page *)0` --> `! (p != (struct Page *)0)`,N,P,N
+confidentiality_56.c,confidentiality.c:73: `+` --> `*`,N,P,N
+confidentiality_57.c,confidentiality.c:73: `+` --> `-`,N,?,N
+confidentiality_58.c,confidentiality.c:74: `==` --> `!=`,N,?,N
+confidentiality_59.c,confidentiality.c:74: `(pages + i)->status == (unsigned int)PAGE_FREE` --> `! (p->status == (unsigned int)PAGE_ALLOCATED)` ,N,?,N
+confidentiality_60.c,confidentiality.c:73: `/` --> `%`,P,P,P
+confidentiality_61.c,confidentiality.c:73: `/` --> `-`,N,P,N
+confidentiality_62.c,confidentiality.c:73: `/` --> `+`,N,P,N
+confidentiality_63.c,confidentiality.c:73: `/` --> `*`,N,P,N
+confidentiality_64.c,confidentiality.c:73: `<` --> `!=`,P,P,P
+confidentiality_65.c,confidentiality.c:73: `<` --> `==`,N,P,N
+confidentiality_66.c,confidentiality.c:73: `<` --> `>=`,N,P,N
+confidentiality_67.c,confidentiality.c:73: `<` --> `>`,P,P,P
+confidentiality_68.c,confidentiality.c:73: `<` --> `<=`,N,P,N
+confidentiality_69.c,confidentiality.c:73: `i < (unsigned int)0x10000 / (unsigned int)0x100` --> `! (i < (unsigned int)0x10000 / (unsigned int)0x100)` ,N,P,N
+confidentiality_70.c,confidentiality.c:56: `+` --> `*`,P,P,P
+confidentiality_71.c,confidentiality.c:56: `+` --> `-`,P,P,P
+confidentiality_72.c,confidentiality.c:56: `<` --> `!=`,P,P,P
+confidentiality_73.c,confidentiality.c:56: `<` --> `==`,P,P,P
+confidentiality_74.c,confidentiality.c:56: `<` --> `>=`,P,P,P
+confidentiality_75.c,confidentiality.c:56: `<` --> `>`,P,P,P
+confidentiality_76.c,confidentiality.c:56: `<` --> `<=`,P,P,P
+confidentiality_77.c,confidentiality.c:56: `(unsigned int)i < size` --> `! ((unsigned int)i < size)`,P,P,P
+confidentiality_78.c,confidentiality.c:50: `+` --> `*`,P,P,P
+confidentiality_79.c,confidentiality.c:50: `+` --> `-`,P,P,P
+confidentiality_80.c,confidentiality.c:50: `<` --> `!=`,P,P,P
+confidentiality_81.c,confidentiality.c:50: `<` --> `==`,P,P,P
+confidentiality_82.c,confidentiality.c:50: `<` --> `>=`,P,P,P
+confidentiality_83.c,confidentiality.c:50: `<` --> `>`,P,P,P
+confidentiality_84.c,confidentiality.c:50: `<` --> `<=`,P,P,P
+confidentiality_85.c,confidentiality.c:50: `(unsigned int)i < size` --> `! ((unsigned int)i < size)`,P,P,P
+confidentiality_86.c,confidentiality.c:43: `+` --> `*`,P,P,P
+confidentiality_87.c,confidentiality.c:43: `+` --> `-`,P,?,P
+confidentiality_88.c,confidentiality.c:44: `==` --> `!=`,P,P,P
+confidentiality_89.c,confidentiality.c:44: `(pages + i)->status == (unsigned int)PAGE_FREE` --> `! ((pages + i)->status == (unsigned int)PAGE_FREE)` ,P,P,P
+confidentiality_90.c,confidentiality.c:43: `/` --> `%`,P,P,P
+confidentiality_91.c,confidentiality.c:43: `/` --> `-`,N,P,N
+confidentiality_92.c,confidentiality.c:43: `/` --> `+`,N,P,N
+confidentiality_93.c,confidentiality.c:43: `/` --> `*`,N,P,N
+confidentiality_94.c,confidentiality.c:43: `<` --> `!=`,P,P,P
+confidentiality_95.c,confidentiality.c:43: `<` --> `==`,N,P,N
+confidentiality_96.c,confidentiality.c:43: `<` --> `>=`,N,P,N
+confidentiality_97.c,confidentiality.c:43: `<` --> `>`,P,P,P
+confidentiality_98.c,confidentiality.c:43: `<` --> `<=`,N,P,N
+confidentiality_99.c,confidentiality.c:43: `(unsigned int)i < (unsigned int)0x10000 / (unsigned int)0x100` --> `! ((unsigned int)i < (unsigned int)0x10000 / (unsigned int)0x100)` ,N,P,N
+confidentiality_100.c,confidentiality.c:20: `+` --> `*`,P,P,P
+confidentiality_101.c,confidentiality.c:20: `+` --> `-`,P,?,P
+confidentiality_102.c,confidentiality.c:26: `*` --> `-`,P,P,P
+confidentiality_103.c,confidentiality.c:26: `*` --> `+`,P,P,P
+confidentiality_104.c,confidentiality.c:22: `==` --> `!=`,P,P,P
+confidentiality_105.c,confidentiality.c:22: `p == (char *)0` --> `! (p == (char *)0)`,P,P,P
+confidentiality_106.c,confidentiality.c:21: `*` --> `-`,P,?,P
+confidentiality_107.c,confidentiality.c:21: `*` --> `+`,P,P,P
+confidentiality_108.c,confidentiality.c:20: `/` --> `%`,P,?,P
+confidentiality_109.c,confidentiality.c:20: `/` --> `-`,P,?,P
+confidentiality_110.c,confidentiality.c:20: `/` --> `+`,P,?,P
+confidentiality_111.c,confidentiality.c:20: `/` --> `*`,P,?,P
+confidentiality_112.c,confidentiality.c:20: `<` --> `!=`,P,P,P
+confidentiality_113.c,confidentiality.c:20: `<` --> `==`,P,?,P
+confidentiality_114.c,confidentiality.c:20: `<` --> `>=`,P,?,P
+confidentiality_115.c,confidentiality.c:20: `<` --> `>`,P,?,P
+confidentiality_116.c,confidentiality.c:20: `<` --> `<=`,P,?,P
+confidentiality_117.c,confidentiality.c:20: `i < (unsigned int)0x10000 / (unsigned int)0x100` --> `! (i < (unsigned int)0x10000 / (unsigned int)0x100)` ,P,?,P
+confidentiality_118.c,confidentiality.c:12: `==` --> `!=`,P,P,P
+confidentiality_119.c,confidentiality.c:12: `pages == (struct Page *)0` --> `! (pages == (struct Page *)0)`,P,P,P
+confidentiality_120.c,confidentiality.c:11: `/` --> `%`,P,?,P
+confidentiality_121.c,confidentiality.c:11: `/` --> `-`,P,P,P
+confidentiality_122.c,confidentiality.c:11: `/` --> `+`,P,P,P
+confidentiality_123.c,confidentiality.c:11: `/` --> `*`,P,?,P
+confidentiality_124.c,confidentiality.c:11: `*` --> `-`,P,?,P
+confidentiality_125.c,confidentiality.c:11: `*` --> `+`,P,?,P

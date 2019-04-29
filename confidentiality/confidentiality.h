@@ -162,101 +162,146 @@ int page_decrypt(struct Page* p);
 //========================== METAPROPERTIES ====================
 
 /*@
+	meta \macro,
+		\name(\forall_page),
+		\arg_nb(2),
+		\forall int i; 0 <= i < MAX_PAGE_NB ==>
+			\let \param_1 = pages + i; \param_2;
+
+	meta \macro,
+		\name(page_data),
+		\arg_nb(1),
+		\param_1->data + (0 .. PAGE_SIZE - 1);
+
+	meta \macro,
+		\name(\constant),
+		\arg_nb(1),
+		\separated(\written, \param_1);
+
+	meta \macro,
+		\name(\hidden),
+		\arg_nb(1),
+		\separated(\read, \param_1);
+
+	meta \macro,
+		\name(not_called),
+		\arg_nb(1),
+		!\fguard(\called == \param_1);
+
+	logic enum allocation_status page_status(struct Page* p) = p->status;
+	logic unsigned page_level(struct Page* p) = p->confidentiality_level;
+	predicate page_allocated(struct Page* p) = p->status == PAGE_ALLOCATED;
+	predicate page_lower(struct Page* p, unsigned user_level) =
+		user_level > p->confidentiality_level;
+*/
+
+/*@
 	//Page status is only modified in page_alloc/init/free
-	meta status_constant: \forall function f;
-			! \subset(f, {\f(init), \f(page_alloc), \f(page_free)}) ==> \writing(f),
-			\forall int i; 0 <= i < MAX_PAGE_NB ==> \let p = pages + i;
-			\separated(\written, &p->status);
+	meta \prop,
+		\name(status_constant),
+		\targets(\diff(\ALL, {init, page_alloc, page_free})),
+		\context(\writing), \forall_page(p, \constant(&p->status));
 */
 
 /*@
 	//Never write to a lower confidentiality page outside of free
-	meta confidential_write: \forall function f;
-		! \subset(f, {\f(page_free), \f(init)}) ==>
-		\writing(f),
-		\forall int i; 0 <= i < MAX_PAGE_NB ==>
-		\let p = pages + i;
-		p->status == PAGE_ALLOCATED ==>
-		user_level > p->confidentiality_level ==>
-		\separated(\written, p->data + (0.. PAGE_SIZE - 1));
+	meta \prop,
+		\name(confidential_write),
+		\targets(\diff(\ALL, {page_free, init})),
+		\context(\writing),
+			\forall_page(p,
+				page_allocated(p) && user_level > page_level(p) ==>
+				\constant(page_data(p))
+			);
 */
 
 /*@
 	//Never read from a higher confidentiality page
-	meta confidential_read: \forall function f;
-		\reading(f),
-		\forall int i; 0 <= i < MAX_PAGE_NB ==>
-		\let p = pages + i;
-		p->status == PAGE_ALLOCATED ==>
-		user_level < p->confidentiality_level ==>
-		\separated(\read, p->data + (0.. PAGE_SIZE - 1));
+	meta \prop,
+		\name(confidential_read),
+		\targets(\ALL),
+		\context(\reading),
+			\forall_page(p,
+				page_allocated(p) && user_level < page_level(p) ==>
+				\hidden(page_data(p))
+			);
 */
 
 /*@
 	//Free pages are not written upon
-	meta constant_free_pages: \forall function f;
-		!\subset(f, \f(init)) ==> \writing(f),
-		\forall unsigned i;
-		0 <= i < MAX_PAGE_NB ==>
-		pages[i].status == PAGE_FREE ==>
-			\separated(\written, pages[i].data + (0 .. PAGE_SIZE - 1));
+	meta \prop,
+		\name(constant_free_pages),
+		\targets(\diff(\ALL, init)),
+		\context(\writing),
+			\forall_page(p,
+				!page_allocated(p) ==> \constant(page_data(p))
+			);
 */
 
 /*@
 	//Free pages are not read from
-	meta hidden_free_pages: \forall function f;
-		!\subset(f, \f(init)) ==> \reading(f),
-		\forall unsigned i;
-		0 <= i < MAX_PAGE_NB ==> pages[i].status == PAGE_FREE ==>
-		\separated(\read, pages[i].data + (0 .. PAGE_SIZE - 1));
+	meta \prop,
+		\name(hidden_free_page),
+		\targets(\diff(\ALL, init)),
+		\context(\reading),
+			\forall_page(p,
+				!page_allocated(p) ==> \hidden(page_data(p))
+			);
 */
 
 /*@
 	//Current confidentiality is only modified through raise/lower_conf_level
-	meta \forall function f;
-		! \subset(f, {\f(raise_conf_level), \f(lower_conf_level), \f(init)}) ==>
-		\writing(f), \separated(\written, &user_level);
+	meta \prop,
+		\name(curconf_wrapped),
+		\targets(\diff(\ALL, {raise_conf_level, lower_conf_level, init})),
+		\context(\writing), \constant(&user_level);
 */
 
 /*@
 	//Confidentiality modifiers are not called within the library
-	meta \forall function f;
-		\calling(f),
-		\called != (char**) raise_conf_level &&
-		\called != (char**) lower_conf_level;
+	meta \prop,
+		\name(curconf_wrapped_2),
+		\targets(\ALL),
+		\context(\calling),
+			not_called(raise_conf_level) &&
+			not_called(lower_conf_level);
 */
 
 /*@
 	//The content of a free page is always null
-	meta free_page_null: \forall function f; !\subset(f, \f(init)) ==>
-		\strong_invariant(f),
-		\forall unsigned i; 0 <= i < MAX_PAGE_NB ==>
-			pages[i].status == PAGE_FREE ==> clean_page(pages + i);
+	meta \prop,
+		\name(free_page_null),
+		\targets(\diff(\ALL, init)),
+		\context(\strong_invariant),
+			\forall_page(p, !page_allocated(p) ==> clean_page(p));
 */
 
 /*@
 	//The confidentiality of an allocated page is constant outside of encrypt/decrypt
-	meta constant_conf_level: \forall function f;
-		! \subset(f, {\f(init), \f(page_encrypt), \f(page_decrypt)}) ==>
-		\writing(f),
-		\forall unsigned i; 0 <= i < MAX_PAGE_NB ==>
-		pages[i].status == PAGE_ALLOCATED ==>
-		\separated(\written, &pages[i].confidentiality_level);
+	meta \prop,
+		\name(constant_conf_level),
+		\targets(\diff(\ALL, {init, page_encrypt, page_decrypt})),
+		\context(\writing),
+			\forall_page(p,
+				page_allocated(p) ==> \constant(&p->confidentiality_level)
+			);
 */
 
 /*@
 	//The encryption level is constant outside of encrypt/decrypt
-	meta constant_enc_level: \forall function f;
-		! \subset(f, {\f(init), \f(page_encrypt), \f(page_decrypt)}) ==>
-		\writing(f),
-		\forall unsigned i; 0 <= i < MAX_PAGE_NB ==>
-		\separated(\written, &pages[i].encrypted_level );
+	meta \prop,
+		\name(constant_enc_level),
+		\targets(\diff(\ALL, {init, page_encrypt, page_decrypt})),
+		\context(\writing),
+			\forall_page(p, \constant(&p->encrypted_level));
 */
 
 /*@
 	//The encryption/decryption primitives are only called within page_encrypt
 	//and page_decrypt
-	meta encdec_uncalled: \forall function f;
-		! \subset(f, {\f(page_encrypt), \f(page_decrypt)}) ==> \calling(f),
-		\called != (char**)encrypt && \called != (char**)decrypt;
+	meta \prop,
+		\name(encdec_uncalled),
+		\targets(\diff(\ALL, {page_encrypt, page_decrypt})),
+		\context(\calling),
+			not_called(encrypt) && not_called(decrypt);
 */

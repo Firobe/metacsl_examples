@@ -46,16 +46,17 @@ struct Page* find_free_page() {
 	return NULL;
 }
 
-/* Example : Caesar encryption
 void encrypt(char* data, unsigned key, unsigned size) {
-	for(int i = 0 ; i < size ; ++i)
-		data[i] = (data[i] + key) % 128;
+	for(int i = 0 ; i < size ; ++i) {
+		;//data[i] = (data[i] + key) % 128;
+	}
 }
+
 void decrypt(char* data, unsigned key, unsigned size) {
-	for(int i = 0 ; i < size ; ++i)
-		data[i] = (data[i] - key) % 128;
+	for(int i = 0 ; i < size ; ++i) {
+		;//data[i] = (data[i] - key) % 128;
+	}
 }
-*/
 
 /**
  * Allocates a new page (if there is memory still available) and returns it

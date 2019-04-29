@@ -1,0 +1,71 @@
+MUTANT NAME,MUTATION,MANUAL VERDICT,EACSL VERDICT,WP VERDICT
+smart.c,NONE,P,P,P
+smart_0.c,smart.c:128: `+` --> `*`,P,P,P
+smart_1.c,smart.c:128: `+` --> `-`,P,P,P
+smart_2.c,smart.c:128: `<` --> `!=`,P,P,P
+smart_3.c,smart.c:128: `<` --> `==`,P,P,P
+smart_4.c,smart.c:128: `<` --> `>=`,P,P,P
+smart_5.c,smart.c:128: `<` --> `>`,P,P,P
+smart_6.c,smart.c:128: `<` --> `<=`,P,P,P
+smart_7.c,smart.c:128: `u < (unsigned int)100` --> `! (u < (unsigned int)100)`,P,P,P
+smart_8.c,smart.c:119: `+` --> `*`,P,?,P
+smart_9.c,smart.c:119: `+` --> `-`,N,?,N
+smart_10.c,smart.c:111: `>=` --> `>`,P,P,P
+smart_11.c,smart.c:111: `>=` --> `!=`,P,?,P
+smart_12.c,smart.c:111: `>=` --> `==`,P,P,P
+smart_13.c,smart.c:111: `>=` --> `<=`,P,?,P
+smart_14.c,smart.c:111: `>=` --> `<`,P,?,P
+smart_15.c,smart.c:111: `cur_room_nb >= (unsigned int)100` --> `! (cur_room_nb >= (unsigned int)100)`,P,?,P
+smart_16.c,smart.c:94: `==` --> `!=`,P,P,P
+smart_17.c,smart.c:94: `call == (unsigned int)F_ALARM_ENABLE` --> `! (call == (unsigned int)F_ALARM_ENABLE)`,P,P,P
+smart_18.c,smart.c:92: `==` --> `!=`,P,P,P
+smart_19.c,smart.c:92: `call == (unsigned int)F_AC_COOL` --> `! (call == (unsigned int)F_AC_COOL)`,P,P,P
+smart_20.c,smart.c:90: `==` --> `!=`,P,P,P
+smart_21.c,smart.c:90: `call == (unsigned int)F_AC_HEAT` --> `! (call == (unsigned int)F_AC_HEAT)`,P,P,P
+smart_22.c,smart.c:86: `==` --> `!=`,P,P,P
+smart_23.c,smart.c:86: `call == (unsigned int)F_AC_DISABLE` --> `! (call == (unsigned int)F_AC_DISABLE)`,P,P,P
+smart_24.c,smart.c:82: `==` --> `!=`,P,P,P
+smart_25.c,smart.c:82: `call == (unsigned int)F_WINDOW_CLOSE` --> `! (call == (unsigned int)F_WINDOW_CLOSE)`,P,P,P
+smart_26.c,smart.c:80: `==` --> `!=`,P,P,P
+smart_27.c,smart.c:80: `call == (unsigned int)F_WINDOW_OPEN` --> `! (call == (unsigned int)F_WINDOW_OPEN)`,P,P,P
+smart_28.c,smart.c:78: `==` --> `!=`,P,P,P
+smart_29.c,smart.c:78: `call == (unsigned int)F_ROOM_UNLOCK` --> `! (call == (unsigned int)F_ROOM_UNLOCK)`,P,P,P
+smart_30.c,smart.c:76: `==` --> `!=`,P,P,P
+smart_31.c,smart.c:76: `call == (unsigned int)F_ROOM_LOCK` --> `! (call == (unsigned int)F_ROOM_LOCK)`,P,P,P
+smart_32.c,smart.c:65: `cur_room_nb - r` --> `-((cur_room_nb - r) - 10)`,P,P,P
+smart_33.c,smart.c:65: `cur_room_nb - r` --> `-((cur_room_nb - r) + 10)`,P,P,P
+smart_34.c,smart.c:65: `cur_room_nb - r` --> `-((cur_room_nb - r) - 5)`,P,P,P
+smart_35.c,smart.c:65: `cur_room_nb - r` --> `-((cur_room_nb - r) + 5)`,P,P,P
+smart_36.c,smart.c:65: `cur_room_nb - r` --> `-((cur_room_nb - r) - 1)`,P,P,P
+smart_37.c,smart.c:65: `cur_room_nb - r` --> `-((cur_room_nb - r) + 1)`,P,P,P
+smart_38.c,smart.c:65: `cur_room_nb - r` --> `-(cur_room_nb - r)`,P,P,P
+smart_39.c,smart.c:65: `cur_room_nb - r` --> `(cur_room_nb - r) - 10`,P,P,P
+smart_40.c,smart.c:65: `cur_room_nb - r` --> `(cur_room_nb - r) + 10`,P,P,P
+smart_41.c,smart.c:65: `cur_room_nb - r` --> `(cur_room_nb - r) - 5`,P,P,P
+smart_42.c,smart.c:65: `cur_room_nb - r` --> `(cur_room_nb - r) + 5`,P,P,P
+smart_43.c,smart.c:65: `cur_room_nb - r` --> `(cur_room_nb - r) - 1`,P,P,P
+smart_44.c,smart.c:65: `cur_room_nb - r` --> `(cur_room_nb - r) + 1`,P,P,P
+smart_45.c,smart.c:67: `+` --> `*`,P,P,P
+smart_46.c,smart.c:67: `+` --> `-`,P,?,P
+smart_47.c,smart.c:67: `<` --> `!=`,P,P,P
+smart_48.c,smart.c:67: `<` --> `==`,N,N,N
+smart_49.c,smart.c:67: `<` --> `>=`,N,N,N
+smart_50.c,smart.c:67: `<` --> `>`,N,N,N
+smart_51.c,smart.c:67: `<` --> `<=`,P,?,P
+smart_52.c,smart.c:67: `r < cur_room_nb` --> `! (r < cur_room_nb)`,N,N,N
+smart_53.c,smart.c:51: `!=` --> `==`,N,P,N
+smart_54.c,smart.c:51: `room->window_state != 0` --> `! (room->window_state != 0)`,N,P,N
+smart_55.c,smart.c:43: `!=` --> `==`,N,N,N
+smart_56.c,smart.c:43: `room->window_state != 0` --> `! (room->window_state != 0)`,N,N,N
+smart_57.c,smart.c:27: `==` --> `!=`,N,N,N
+smart_58.c,smart.c:27: `room->ac_state == (unsigned int)AC_DISABLED` --> `! (room->ac_state == (unsigned int)AC_DISABLED)`,N,N,N
+smart_59.c,smart.c:19: `==` --> `!=`,N,?,N
+smart_60.c,smart.c:19: `alarm_status == (unsigned int)ALARM_UNLOCKING` --> `! (alarm_status == (unsigned int)ALARM_UNLOCKING)`,N,?,N
+smart_61.c,smart.c:19: `>=` --> `>`,P,P,P
+smart_62.c,smart.c:19: `>=` --> `!=`,N,P,N
+smart_63.c,smart.c:19: `>=` --> `==`,P,?,P
+smart_64.c,smart.c:19: `>=` --> `<=`,N,P,N
+smart_65.c,smart.c:19: `>=` --> `<`,N,P,N
+smart_66.c,smart.c:19: `(unsigned int)user_clearance >= room->clearance_needed` --> `! ((unsigned int)user_clearance >= room->clearance_needed)` ,N,P,N
+smart_67.c,smart.c:10: `==` --> `!=`,N,N,N
+smart_68.c,smart.c:10: `alarm_status == (unsigned int)ALARM_NONE` --> `! (alarm_status == (unsigned int)ALARM_NONE)`,N,N,N
